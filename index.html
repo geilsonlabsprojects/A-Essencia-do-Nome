@@ -265,7 +265,8 @@
 
                     <div class="w-16 h-[1px] bg-gradient-to-r from-transparent via-rose-300 to-transparent mx-auto mb-6"></div>
 
-                    <h3 class="font-serif text-2xl sm:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600 mb-2">Feliz Dia da Mulher</h3>
+                    <!-- ATENÇÃO AQUI: Adicionado ID 'titleFelizDia' para correção no canvas -->
+                    <h3 id="titleFelizDia" class="font-serif text-2xl sm:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600 mb-2">Feliz Dia da Mulher</h3>
                     <p class="text-xs tracking-widest text-slate-400 uppercase">8 de Março • Celebre sua força</p>
                 </div>
             </div>
@@ -299,7 +300,7 @@
             'J': "Seu nome é sinônimo de justiça e alegria contagiante. Você tem uma energia jovem, não importa o tempo que passe, e uma capacidade maravilhosa de lutar por quem ama e pelo que acredita.",
             'K': "Força, independência e magnetismo. Você possui uma aura poderosa e uma personalidade marcante. Não nasceu para ser coadjuvante, mas sim a autora brilhante da sua própria e linda história.",
             'L': "Luz e liberdade definem seu caminho. Sua sensibilidade é um superpoder. Você toca a alma das pessoas com suas palavras, com sua arte de viver e com seu coração imensamente generoso.",
-            'M': "Você é a mãe das grandes ideias, o colo que conforta e a mente que realiza. Há um magnetismo materno e poderoso em você, capaz de nutrir sonhos e transformar realidades com puro amor.",
+            'M': "Você é a mãe das grandes ideias, o colo que conforta e a mente que realiza. Há um magnetismo materno e poderoso em você, capaz de nutrir sonhos e transform realidades com puro amor.",
             'N': "Sua essência é nobre e sua intuição é seu guia. Você tem uma capacidade única de renovação, adaptando-se às fases da vida como a lua, sempre revelando uma nova e fascinante versão de si mesma.",
             'O': "Originalidade e otimismo são suas marcas registradas. Você enxerga horizontes onde outros veem limites. Sua presença é um presente, trazendo ordem, paz e um toque de genialidade ao mundo.",
             'P': "Profundidade, paz e perseverança. Você é uma mulher de convicções fortes, que constrói seus castelos sobre rochas firmes. Sua beleza vem da sua integridade e do seu coração puro.",
@@ -445,12 +446,21 @@
             </span>`;
             dlBtn.disabled = true;
 
+            // -------- CORREÇÃO DO TEXTO DO GRADIENTE --------
+            // Pega o elemento do título "Feliz Dia da Mulher"
+            const titleElement = document.getElementById('titleFelizDia');
+            // Salva as classes originais com o gradiente
+            const originalTitleClasses = titleElement.className;
+            
+            // Remove o texto transparente e coloca uma cor rosa sólida (temporariamente para o print)
+            titleElement.className = "font-serif text-2xl sm:text-3xl font-semibold text-rose-500 mb-2";
+
             try {
                 // Aguarda as fontes carregarem completamente para não quebrar a imagem
                 await document.fonts.ready;
 
-                // Espera um momento para o botão atualizar visualmente
-                await new Promise(r => setTimeout(r, 100));
+                // Espera um momento para as alterações do DOM entrarem em vigor
+                await new Promise(r => setTimeout(r, 150));
 
                 const canvas = await html2canvas(exportNode, {
                     scale: 3, 
@@ -470,6 +480,10 @@
                 console.error("Erro ao gerar imagem:", err);
                 alert("Ops! Houve um pequeno erro ao gerar a sua imagem. Tente novamente.");
             } finally {
+                // -------- RESTAURA O DESIGN ORIGINAL --------
+                // Devolve o gradiente animado de volta para o texto na tela
+                titleElement.className = originalTitleClasses;
+
                 // Restaura o botão
                 dlBtn.innerHTML = originalBtnHTML;
                 dlBtn.disabled = false;
