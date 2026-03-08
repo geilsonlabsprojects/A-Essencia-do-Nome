@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Essência do Seu Nome</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-mystic: #1a1a2e;
+            --secondary-mystic: #16213e;
+            --accent-mystic: #0f3460;
+            
+            --primary-fem: #fff0f5;
+            --secondary-fem: #fde2e4;
+            --accent-fem: #ffb5a7;
+            --text-fem: #6d597a;
+            --rose-gold: #b76e79;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 1.5s ease-in-out;
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-script { font-family: 'Great Vibes', cursive; }
+
+        /* Temas de Fundo */
+        .bg-mystic {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .bg-bloom {
+            background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+            position: relative;
+        }
+
+        .bg-bloom::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at top right, rgba(255, 181, 167, 0.4), transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(253, 226, 228, 0.6), transparent 50%);
+            z-index: -1;
+            animation: pulseGlow 8s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Cartões e Elementos */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* O Cartão Exportável - Cores sólidas para garantir renderização perfeita no PNG */
+        .export-card {
+            background: linear-gradient(to bottom right, #ffffff, #fffafb);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(183, 110, 121, 0.15);
+        }
+
+        .export-card::before {
+            content: '';
+            position: absolute;
+            top: -2px; bottom: -2px; left: -2px; right: -2px;
+            background: linear-gradient(45deg, #fde2e4, #b76e79, #ffb5a7);
+            z-index: -1;
+            border-radius: inherit;
+        }
+
+        .inner-border {
+            position: absolute;
+            top: 15px; bottom: 15px; left: 15px; right: 15px;
+            border: 1px dashed rgba(183, 110, 121, 0.3);
+            border-radius: 16px;
+            pointer-events: none;
+        }
+
+        /* Animações */
+        .fade-in-up {
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); visibility: hidden; }
+        }
+
+        /* Loading Elegante */
+        .elegant-loader {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            margin: 0 auto;
+        }
+        .elegant-loader span {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid transparent;
+            border-top-color: #b76e79;
+            border-radius: 50%;
+            animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+        }
+        .elegant-loader span:nth-child(2) {
+            border-top-color: transparent;
+            border-bottom-color: #ffb5a7;
+            animation-direction: reverse;
+            animation-duration: 2s;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg) scale(0.8); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(0.8); }
+        }
+
+        /* Partículas */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,181,167,0.8) 0%, rgba(255,255,255,0) 70%);
+            pointer-events: none;
+            z-index: 0;
+            animation: floatParticle linear forwards;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Input Customizado */
+        .fancy-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #cbd5e1;
+            border-radius: 0;
+            padding: 10px 0;
+            font-size: 1.5rem;
+            text-align: center;
+            color: #334155;
+            transition: all 0.3s ease;
+        }
+        .fancy-input:focus {
+            outline: none;
+            border-bottom-color: #64748b;
+            box-shadow: 0 10px 10px -10px rgba(0,0,0,0.1);
+        }
+        .fancy-input::placeholder {
+            color: #cbd5e1;
+            font-weight: 300;
+        }
+    </style>
+</head>
+<body id="mainBody" class="bg-mystic transition-all duration-1000 p-4 sm:p-8">
+
+    <!-- Container de Partículas -->
+    <div id="particlesContainer" class="fixed inset-0 overflow-hidden pointer-events-none z-0"></div>
+
+    <!-- TELA 1: INTRODUÇÃO -->
+    <div id="step1" class="glass-panel max-w-lg w-full rounded-[2rem] p-10 relative z-10 text-center fade-in-up">
+        <div class="mb-8">
+            <div class="mb-6 flex justify-center text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            </div>
+            
+            <h1 class="font-serif text-4xl sm:text-5xl text-slate-800 mb-4 tracking-tight">A Essência do Nome</h1>
+            <p class="text-slate-500 mb-10 text-base leading-relaxed font-light">
+                Há uma frequência única escondida nas letras que formam quem você é. Escreva seu nome para decifrar a mensagem que o universo reservou para sua essência.
+            </p>
+            
+            <div class="relative mb-10">
+                <input type="text" id="nameInput" placeholder="Seu nome..." autocomplete="off"
+                       class="fancy-input w-full font-serif">
+                <div id="errorMsg" class="absolute -bottom-6 left-0 w-full text-red-400 text-sm opacity-0 transition-opacity">
+                    Por favor, revele seu nome.
+                </div>
+            </div>
+            
+            <button onclick="startJourney()" class="group relative inline-flex items-center justify-center px-8 py-4 font-medium text-white transition-all duration-300 bg-slate-800 rounded-full hover:bg-slate-700 hover:shadow-lg hover:shadow-slate-400/30 overflow-hidden">
+                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+                <span class="relative flex items-center gap-2">
+                    Revelar Essência
+                    <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </span>
+            </button>
+        </div>
+    </div>
+
+    <!-- TELA 2: LOADING (O Mistério) -->
+    <div id="stepLoading" class="hidden absolute inset-0 z-20 flex-col items-center justify-center bg-white/60 backdrop-blur-md transition-opacity duration-1000 opacity-0">
+        <div class="elegant-loader mb-6">
+            <span></span>
+            <span></span>
+        </div>
+        <p id="loadingText" class="font-serif text-xl text-slate-600 italic tracking-widest animate-pulse">Lendo as entrelinhas...</p>
+    </div>
+
+    <!-- TELA 3: O RESULTADO (O Cartão Premium) -->
+    <div id="step3" class="hidden w-full max-w-2xl z-30 flex flex-col items-center p-4">
+        
+        <!-- Área a ser exportada -->
+        <div id="exportWrapper" class="w-full bg-transparent p-2 sm:p-4">
+            <div class="export-card w-full rounded-2xl p-8 sm:p-12 text-center overflow-hidden">
+                <div class="inner-border"></div>
+                
+                <!-- Decorações SVG Florais -->
+                <svg class="absolute top-0 left-0 w-32 h-32 text-rose-200 opacity-40 transform -translate-x-4 -translate-y-4" viewBox="0 0 100 100" fill="currentColor">
+                    <path d="M50,0 C60,30 90,40 100,50 C90,60 60,70 50,100 C40,70 10,60 0,50 C10,40 40,30 50,0 Z"/>
+                </svg>
+                <svg class="absolute bottom-0 right-0 w-40 h-40 text-pink-200 opacity-40 transform translate-x-4 translate-y-4" viewBox="0 0 100 100" fill="currentColor">
+                    <path d="M50,0 C65,35 85,35 100,50 C85,65 65,65 50,100 C35,65 15,65 0,50 C15,35 35,35 50,0 Z"/>
+                </svg>
+
+                <div class="relative z-10">
+                    <p class="font-serif italic text-rose-400 mb-2 tracking-widest text-sm uppercase">A essência divina de</p>
+                    <h2 id="finalName" class="font-script text-6xl sm:text-7xl text-slate-800 mb-8 leading-tight drop-shadow-sm"></h2>
+                    
+                    <div class="relative px-4 sm:px-8 mb-10">
+                        <svg class="absolute -top-4 -left-2 w-8 h-8 text-rose-300 opacity-50" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                        
+                        <p id="finalText" class="font-serif text-slate-700 text-lg sm:text-xl leading-relaxed italic relative z-10"></p>
+                        
+                        <svg class="absolute -bottom-6 -right-2 w-8 h-8 text-rose-300 opacity-50 transform rotate-180" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                    </div>
+
+                    <div class="w-16 h-[1px] bg-gradient-to-r from-transparent via-rose-300 to-transparent mx-auto mb-6"></div>
+
+                    <h3 class="font-serif text-2xl sm:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-purple-600 mb-2">Feliz Dia da Mulher</h3>
+                    <p class="text-xs tracking-widest text-slate-400 uppercase">8 de Março • Celebre sua força</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ações do Usuário (Fora da área de exportação) -->
+        <div id="actionButtons" class="flex flex-col sm:flex-row gap-4 w-full mt-6 px-4">
+            <button id="downloadBtn" onclick="downloadGift()" class="flex-1 group relative flex items-center justify-center gap-3 bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600 text-white font-medium py-4 px-8 rounded-2xl transition-all shadow-lg hover:shadow-rose-500/30 overflow-hidden">
+                <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
+                <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                <span class="relative z-10 btn-text">Baixar Meu Presente</span>
+            </button>
+            <button onclick="resetExperience()" class="sm:w-auto w-full flex items-center justify-center bg-white/80 hover:bg-white text-slate-600 font-medium py-4 px-8 rounded-2xl transition-all border border-slate-200 shadow-sm backdrop-blur-sm">
+                Recomeçar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Dicionário Estendido e Poético
+        const poeticDictionary = {
+            'A': "Seu nome é o princípio de tudo. Carrega a vibração da liderança serena e de uma luz que guia. Você é aquela que abre caminhos, que acolhe com grandeza e inspira as pessoas com sua determinação natural.",
+            'B': "Há uma doçura imensa e uma resiliência rara em sua essência. Você transforma o comum em belo, constrói laços profundos e tem o dom de fazer com que todos se sintam seguros em sua presença.",
+            'C': "Criatividade e coragem dançam no seu ser. Você possui uma intuição afiada, um coração vibrante e a incrível capacidade de colorir os dias cinzentos de quem tem a sorte de cruzar o seu caminho.",
+            'D': "Seu nome exala dedicação e uma força silenciosa, porém inabalável. Você constrói sua jornada com sabedoria, sendo um porto seguro e uma fonte inesgotável de amor verdadeiro e lealdade.",
+            'E': "Você é movimento, empatia e energia pura. Sua alma é expansiva e tem sede de vida. O seu sorriso tem o poder de iluminar ambientes e a sua mente brilhante nunca para de evoluir.",
+            'F': "A leveza e a firmeza se encontram perfeitamente em você. Como uma flor que nasce em lugares improváveis, você carrega uma beleza resiliente, uma fé inquebrável e um encanto totalmente único.",
+            'G': "Sua essência é feita de graciosidade e generosidade. Você tem uma alma nobre, capaz de grandes feitos, e uma sensibilidade que permite ver a magia nos pequenos detalhes da vida.",
+            'H': "Há um mistério e uma harmonia profunda em você. Seu nome indica uma mulher pacificadora, observadora, que carrega uma sabedoria antiga e um abraço que cura qualquer tempestade.",
+            'I': "Intensa, inteligente e inesquecível. Você vive suas verdades com paixão, não tem medo de mergulhar fundo e possui uma luz interior que irradia e aquece todos ao seu redor.",
+            'J': "Seu nome é sinônimo de justiça e alegria contagiante. Você tem uma energia jovem, não importa o tempo que passe, e uma capacidade maravilhosa de lutar por quem ama e pelo que acredita.",
+            'K': "Força, independência e magnetismo. Você possui uma aura poderosa e uma personalidade marcante. Não nasceu para ser coadjuvante, mas sim a autora brilhante da sua própria e linda história.",
+            'L': "Luz e liberdade definem seu caminho. Sua sensibilidade é um superpoder. Você toca a alma das pessoas com suas palavras, com sua arte de viver e com seu coração imensamente generoso.",
+            'M': "Você é a mãe das grandes ideias, o colo que conforta e a mente que realiza. Há um magnetismo materno e poderoso em você, capaz de nutrir sonhos e transformar realidades com puro amor.",
+            'N': "Sua essência é nobre e sua intuição é seu guia. Você tem uma capacidade única de renovação, adaptando-se às fases da vida como a lua, sempre revelando uma nova e fascinante versão de si mesma.",
+            'O': "Originalidade e otimismo são suas marcas registradas. Você enxerga horizontes onde outros veem limites. Sua presença é um presente, trazendo ordem, paz e um toque de genialidade ao mundo.",
+            'P': "Profundidade, paz e perseverança. Você é uma mulher de convicções fortes, que constrói seus castelos sobre rochas firmes. Sua beleza vem da sua integridade e do seu coração puro.",
+            'R': "Rainha de suas próprias escolhas. Você carrega a vibração da realeza interior, da razão equilibrada com a emoção. É corajosa, autêntica e deixa um rastro de luz e inspiração por onde passa.",
+            'S': "Sabedoria, sedução e sensibilidade tecem a sua alma. Você tem o dom da diplomacia e um charme natural irresistível. É aquela mulher que floresce em silêncio e deslumbra a todos com sua grandeza.",
+            'T': "Transformação e ternura. Você é uma guerreira que luta com o coração. Tem os pés no chão, mas a alma no infinito. Sua lealdade é um tesouro raro para aqueles que ganham a sua confiança.",
+            'V': "Verdade e vitalidade. Você é como a brisa que anuncia bons tempos. Intensa, vitoriosa por natureza e dona de uma visão de mundo que inspira progresso, amor e muita paixão pela vida."
+        };
+
+        const defaultPoetry = "Sua essência é um mosaico de força, beleza e singularidade. Você carrega no nome o poder de uma mulher que não se prende a padrões, que desbrava a vida com coragem e que torna o mundo mais bonito simplesmente por existir.";
+
+        // --- SISTEMA DE PARTÍCULAS ---
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            container.innerHTML = ''; 
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 15 + 5;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 10 + 5;
+                const delay = Math.random() * 5;
+
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${left}vw`;
+                particle.style.bottom = `-20px`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+
+                container.appendChild(particle);
+            }
+        }
+
+        function stopParticles() {
+            document.getElementById('particlesContainer').innerHTML = '';
+        }
+
+        // --- LÓGICA DO APP ---
+        function formatName(name) {
+            return name.split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(' ');
+        }
+
+        function getPoetry(name) {
+            const firstLetter = name.trim().charAt(0).toUpperCase();
+            const cleanLetter = firstLetter.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            return poeticDictionary[cleanLetter] || defaultPoetry;
+        }
+
+        function startJourney() {
+            const inputElement = document.getElementById('nameInput');
+            const rawName = inputElement.value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (!rawName) {
+                errorMsg.style.opacity = '1';
+                errorMsg.style.bottom = '-30px';
+                inputElement.focus();
+                return;
+            }
+
+            errorMsg.style.opacity = '0';
+            const name = formatName(rawName);
+
+            // Esconde a tela inicial
+            const step1 = document.getElementById('step1');
+            step1.classList.add('fade-out');
+
+            setTimeout(() => {
+                step1.classList.add('hidden');
+                step1.classList.remove('fade-out');
+                
+                // Mostra tela de Loading Misteriosa
+                const loader = document.getElementById('stepLoading');
+                loader.classList.remove('hidden');
+                loader.style.display = 'flex';
+                // Força reflow
+                void loader.offsetWidth;
+                loader.style.opacity = '1';
+
+                const loadingTexts = [
+                    "Buscando as estrelas...",
+                    "Decifrando a sua luz...",
+                    "Revelando sua essência..."
+                ];
+                let textIndex = 0;
+                const textInterval = setInterval(() => {
+                    textIndex = (textIndex + 1) % loadingTexts.length;
+                    document.getElementById('loadingText').innerText = loadingTexts[textIndex];
+                }, 1000);
+
+                // Após suspense, revela o resultado
+                setTimeout(() => {
+                    clearInterval(textInterval);
+                    loader.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        loader.classList.add('hidden');
+                        loader.style.display = 'none';
+                        showResult(name);
+                    }, 1000);
+                }, 3500);
+
+            }, 800);
+        }
+
+        function showResult(name) {
+            // Preenche dados
+            document.getElementById('finalName').innerText = name.split(' ')[0];
+            document.getElementById('finalText').innerText = getPoetry(name);
+
+            // Muda o fundo
+            const body = document.getElementById('mainBody');
+            body.classList.remove('bg-mystic');
+            body.classList.add('bg-bloom');
+
+            // Partículas
+            createParticles();
+
+            // Mostra o cartão
+            const step3 = document.getElementById('step3');
+            step3.classList.remove('hidden');
+            step3.classList.add('fade-in-up');
+        }
+
+        // --- EXPORTAÇÃO (IMAGEM PNG) ---
+        async function downloadGift() {
+            const exportNode = document.getElementById('exportWrapper');
+            const dlBtn = document.getElementById('downloadBtn');
+            const originalBtnHTML = dlBtn.innerHTML;
+            
+            // UI Feedback
+            dlBtn.innerHTML = `
+                <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
+                <span class="relative z-10 flex items-center gap-2">
+                <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Gerando Imagem...
+            </span>`;
+            dlBtn.disabled = true;
+
+            try {
+                // Aguarda as fontes carregarem completamente para não quebrar a imagem
+                await document.fonts.ready;
+
+                // Espera um momento para o botão atualizar visualmente
+                await new Promise(r => setTimeout(r, 100));
+
+                const canvas = await html2canvas(exportNode, {
+                    scale: 3, 
+                    backgroundColor: null,
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                });
+
+                // Cria o download
+                const link = document.createElement('a');
+                const firstName = document.getElementById('finalName').innerText;
+                link.download = `Homenagem_${firstName}_Dia_da_Mulher.png`;
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+            } catch (err) {
+                console.error("Erro ao gerar imagem:", err);
+                alert("Ops! Houve um pequeno erro ao gerar a sua imagem. Tente novamente.");
+            } finally {
+                // Restaura o botão
+                dlBtn.innerHTML = originalBtnHTML;
+                dlBtn.disabled = false;
+            }
+        }
+
+        function resetExperience() {
+            document.getElementById('nameInput').value = '';
+            
+            const step3 = document.getElementById('step3');
+            step3.classList.add('fade-out');
+            
+            setTimeout(() => {
+                step3.classList.add('hidden');
+                step3.classList.remove('fade-in-up', 'fade-out');
+                
+                const body = document.getElementById('mainBody');
+                body.classList.remove('bg-bloom');
+                body.classList.add('bg-mystic');
+                
+                stopParticles();
+
+                const step1 = document.getElementById('step1');
+                step1.classList.remove('hidden');
+                step1.classList.add('fade-in-up');
+            }, 800);
+        }
+
+        // Submeter com Enter
+        document.getElementById('nameInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                startJourney();
+            }
+        });
+
+        // Limpar erro ao digitar
+        document.getElementById('nameInput').addEventListener('input', function () {
+            document.getElementById('errorMsg').style.opacity = '0';
+        });
+    </script>
+</body>
+</html>
